@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import org.controlsfx.control.CheckComboBox?>
+
+<AnchorPane minHeight="64.0" minWidth="662.0" prefHeight="64.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mbio.ncct.ont.view.DemultiplexingController">
+  <children>
+    <CheckBox fx:id="cDemultiplexing" layoutX="24.0" layoutY="28.0" mnemonicParsing="false" text="Demultiplexing" AnchorPane.leftAnchor="17.0" />
+      <Group fx:id="gpDemultiplexing" layoutX="143.0" layoutY="9.0">
+         <children>
+          <CheckComboBox fx:id="ccbBarcodeKits" layoutY="17.0" prefHeight="26.0" prefWidth="363.0" />
+          <Label layoutX="4.0" text="Barcode Kits Number:" />
+         </children>
+      </Group>
+  </children>
+</AnchorPane>

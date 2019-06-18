@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane minHeight="135.0" minWidth="532.0" prefHeight="161.0" prefWidth="544.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mbio.ncct.ont.view.AdvancedBasecallingController">
+   <children>
+      <Group layoutX="386.0" layoutY="90.0" />
+      <HBox layoutX="385.0" layoutY="116.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#Cancel" text="Cancel" />
+            <Button mnemonicParsing="false" onAction="#OK" prefHeight="26.0" prefWidth="63.0" text="OK" />
+         </children>
+      </HBox>
+      <Separator layoutX="28.0" layoutY="102.0" prefHeight="1.0" prefWidth="493.0" AnchorPane.leftAnchor="28.0" />
+      <Group layoutX="45.0" layoutY="65.0">
+         <children>
+            <Label layoutY="5.0" text="Mode" />
+            <ChoiceBox fx:id="cbGuppyMode" layoutX="43.0" prefWidth="150.0" value="high-accuracy" />
+            <Label layoutX="223.0" layoutY="5.0" text="Device" />
+            <ChoiceBox fx:id="cbDevice" layoutX="274.0" prefWidth="150.0" value="PromethION" />
+         </children>
+      </Group>
+      <Label layoutX="34.0" layoutY="21.0" text="Guppy_basecaller Settings" AnchorPane.leftAnchor="30.0" />
+      <Separator layoutX="25.0" layoutY="54.0" prefHeight="1.0" prefWidth="493.0" AnchorPane.leftAnchor="28.0" />
+   </children>
+</AnchorPane>
