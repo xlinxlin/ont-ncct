@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.AnchorPane;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import mbio.ncct.ont.MainApp;
 import mbio.ncct.ont.model.AssemblyModel;
+import mbio.ncct.ont.util.PipelineUtil;
 
 /**
  * This is the assembly controller class for pipeline assembly view.
@@ -51,8 +53,11 @@ public class AssemblyController {
   @FXML
   private Group gpAssembly;
   
+  /** Initializes a PipelineUtil object.  */
+  private PipelineUtil pUtil = new PipelineUtil();;
+  
   /**
-   * Initializes the controller of pipeline overview.
+   * Initializes the controller of assembly setting view.
    */
   @FXML
   private void initialize()  { 
@@ -122,5 +127,24 @@ public class AssemblyController {
     } catch (Exception e) {
       logger.error("Can not load advanced assembly view. " + e);
     }
+  }
+  
+  /**
+   * Shows the hint of Assembly Mode setting.
+   */
+  @FXML
+  private void showAssemblyModeHint() {
+    pUtil.createAlertDialog(AlertType.INFORMATION, "Assembly Mode", "Conservative: Conservative mode is least likely to produce a complete assembly but has a very low risk of misassembly.\n\n" + 
+        "Normal: Normal mode is intermediate regarding both completeness and misassembly risk.\n\n" + 
+        "Bold: Bold mode is most likely to produce a complete assembly but carries greater risk of misassembly.");
+  }
+  
+  /**
+   * Shows the hint of Assembly Method setting.
+   */
+  @FXML
+  private void showAssemblyMethodHint() {
+    pUtil.createAlertDialog(AlertType.INFORMATION, "Assembly Mode", "Long-read-only assembly: Long-read-only assembly using only long reads.\n\n" + 
+        "Hybrid assembly: Hybrid assembly using both Illumina reads and long reads.");
   }
 }

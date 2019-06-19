@@ -9,7 +9,6 @@ import javafx.beans.property.StringProperty;
  * @author Yan Zhou
  * created on 2019/06/14
  */
-
 public class GeneralModel {
   
   /** Initializes and sets the ONT reads workspace. */
@@ -31,7 +30,7 @@ public class GeneralModel {
   private final StringProperty selectedBarcode = new SimpleStringProperty("");
   
   /** Initializes and sets the threads. */
-  private final StringProperty threads = new SimpleStringProperty("8");
+  private final StringProperty threads = new SimpleStringProperty("112");
   
   /** Initializes and sets the prefix. */
   private final StringProperty prefix = new SimpleStringProperty("");
@@ -163,5 +162,4 @@ public class GeneralModel {
   public void setThreads(String threads) {
     this.threads.set(threads);
   }
-  
 }

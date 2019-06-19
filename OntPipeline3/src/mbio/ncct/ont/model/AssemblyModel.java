@@ -19,7 +19,7 @@ public class AssemblyModel {
   /** Initializes and sets the assembly method. */
   private final StringProperty method = new SimpleStringProperty("Hybrid assembly");
   
-  /** Initializes and sets if a .vcf file will be output. */
+  /** Initializes and sets if a VCF file will be output. */
   private final BooleanProperty ifVcf = new SimpleBooleanProperty(false);
   
   /** Initializes and sets if assembly will be used. */
@@ -58,16 +58,16 @@ public class AssemblyModel {
   }
   
   /**
-   * Sets if .vcf file will be produced.
-   * @param ifVcf The Boolean value of if .vcf file will be produced.
+   * Sets if a VFC file will be produced.
+   * @param ifVcf The Boolean value of if a VCF file will be produced.
    */
   public void setIfVcf(Boolean ifVcf) {
     this.ifVcf.set(ifVcf);
   }
   
   /**
-   * Gets if a .vcf file will be produced.
-   * @return the Boolean value of if if a .vcf file will be produced.
+   * Gets if a VCF file will be produced.
+   * @return the Boolean value of if a VCF file will be produced.
    */
   public Boolean getIfVcf() {
     return ifVcf.get();

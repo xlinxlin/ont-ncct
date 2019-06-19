@@ -23,11 +23,8 @@ public class FileUtil {
   /** Initializes log4j2. */
   private static Logger logger = LogManager.getLogger(FileUtil.class);
   
-  /** Sets Guppy location. */
-  private static String guppyUrl = "/opt/ont-guppy-cpu_3.1.5";
-  
-  /** Sets pbs file location. */
-  private static String pbsUrl = "/opt/ontpipeline/pbs/pipelineWithLoop.pbs";
+  /** Initializes a ReadPropertyUtil object. */
+  private ReadPropertyUtil rpUtil = new ReadPropertyUtil();
   
   /** Initializes a BashUtil object. */
   private BashUtil bUtil = new BashUtil();
@@ -36,27 +33,28 @@ public class FileUtil {
   private PipelineUtil pUtil = new PipelineUtil();
   
   /**
-   * Creates a .pbs file filled with the input parameters.
-   * @param p A Pipeline object.
+   * Creates a PBS file filled with the input parameters.
+   * @param gm A GeneralModel object.
+   * @param bcm A BaseCallingModel object.
+   * @param dm A DemultiplexingModel object.
+   * @param rfm A ReadsFilterModel object.
+   * @param am A AssemblyModel object.
+   * @param pm A PolishingModel object.
    * @param timestamp The current date and time yyyyMMdd_HHmmss.
    */
   public void createPbsFile(GeneralModel gm, BaseCallingModel bcm, DemultiplexingModel dm, ReadsFilterModel rfm, AssemblyModel am, PolishingModel pm, String timestamp) {
     if ( !bcm.getFlowcellId().equals("FLO-MIN107") && bcm.getGuppyMode().equals("fast")) {
       Map<String, String> combinationFlowcellKit = null;
       String cfg = null;
-      try {
-        combinationFlowcellKit = bUtil.getCombinationFlowcellKit();
-        cfg = combinationFlowcellKit.get(bcm.getFlowcellId().concat(bcm.getKitNumber())).toString();
-      } catch (Exception e) {
-        logger.error("Can not get the combinations of flowcell ID and kit number. " + e);
-      }
+      combinationFlowcellKit = bUtil.getCombinationFlowcellKit();
+      cfg = combinationFlowcellKit.get(bcm.getFlowcellId().concat(bcm.getKitNumber())).toString();
       int cfg_bps = cfg.indexOf("bps");
       String cfgFile = ( cfg.substring(0, cfg_bps + 3) + "_fast" ) + ( bcm.getDevice().equals("PromethION") ? "_prom" : "" ) + ".cfg";
       bcm.setIfGuppyFast(true);
-      bcm.setGuppyCfgFile(guppyUrl + "/data/" + cfgFile);
+      bcm.setGuppyCfgFile(rpUtil.getGuppyUrl() + "/data/" + cfgFile);
     }
     
-    Path path = Paths.get(pbsUrl);
+    Path path = Paths.get(rpUtil.getPbsUrl());
     Path newPath = Paths.get(gm.getOutputPath() + "/pipelineWithLoop_" + timestamp + ".pbs");
     Charset charset = StandardCharsets.UTF_8;
 
@@ -103,7 +101,12 @@ public class FileUtil {
   
   /**
    * Creates an user log file with all the input parameters.
-   * @param p a Pipeline object.
+   * @param gm A GeneralModel object.
+   * @param bcm A BaseCallingModel object.
+   * @param dm A DemultiplexingModel object.
+   * @param rfm A ReadsFilterModel object.
+   * @param am A AssemblyModel object.
+   * @param pm A PolishingModel object.
    * @param timestamp the current date and time: yyyyMMdd_HHmmss.
    */
   public void createUserLog(GeneralModel gm, BaseCallingModel bcm, DemultiplexingModel dm, ReadsFilterModel rfm, AssemblyModel am, PolishingModel pm, String timestamp) {
@@ -124,12 +127,15 @@ public class FileUtil {
       writer.append("Sample sheet path: " + (gm.getSampleSheetPath().isEmpty() ? "Not given." : gm.getSampleSheetPath()) + "\n");
       writer.append("Prefix: " + (gm.getPrefix().isEmpty() ? "Not given." : gm.getPrefix()) + "\n");
       writer.append("Threads: " + gm.getThreads() + "\n");
-      //writer.append("Selected barcodes: " + ( gm.getSelectedBarcode().isEmpty() ? "Default: all. " :formatSelectedBarcodes(gm.getSelectedBarcode()) ) + "\n");
+      writer.append("Selected barcodes: " + ( gm.getSelectedBarcode().isEmpty() ? "Default: all. " : pUtil.formatSelectedBarcodes(gm.getSelectedBarcode()) ) + "\n");
       if (bcm.getIfBasecalling()) {
         writer.append("\n====Basecalling Settings====\n");
         writer.append("Flowcell ID: " + bcm.getFlowcellId() + " \n");
         writer.append("Kit number: " + bcm.getKitNumber() + " \n");
         writer.append("Guppy mode: " + bcm.getGuppyMode() + " \n");
+        if(bcm.getIfGuppyFast()) {
+          writer.append("Guppy config file: " + bcm.getGuppyCfgFile() + " \n");
+        }
         writer.append("Device: " + bcm.getDevice() + " \n");
       } else {
         writer.append("\n====No Basecalling====\n");
@@ -175,5 +181,4 @@ public class FileUtil {
       logger.error("Can not create user log file. " +  e);
     }
   }
-
 }

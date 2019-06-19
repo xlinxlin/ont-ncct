@@ -10,7 +10,7 @@
 
 <AnchorPane minHeight="64.0" minWidth="662.0" prefHeight="64.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mbio.ncct.ont.view.AssemblyController">
    <children>
-      <Group fx:id="gpAssembly" layoutX="143.0" layoutY="10.0">
+      <Group fx:id="gpAssembly" layoutX="143.0" layoutY="10.0" >
          <children>
             <ChoiceBox fx:id="cbMode" layoutY="15.0" prefHeight="26.0" prefWidth="163.0" value="normal">
                <tooltip>
@@ -23,8 +23,8 @@
                </tooltip>
             </ChoiceBox>
             <Button layoutX="385.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleAdvancedAssembly" prefHeight="26.0" prefWidth="99.0" text="Advanced" />
-            <Label layoutX="4.0" text="Assembly Mode:" />
-            <Label layoutX="202.0" text="Assembly Method:" />
+            <Label layoutX="4.0" onMouseClicked="#showAssemblyModeHint" text="Assembly Mode (?):" />
+            <Label layoutX="202.0" onMouseClicked="#showAssemblyMethodHint" text="Assembly Method (?):" />
          </children>
       </Group>
       <CheckBox fx:id="cAssembly" layoutX="17.0" layoutY="28.0" mnemonicParsing="false" text="Assembly" />

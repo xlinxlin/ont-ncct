@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.AnchorPane;
@@ -18,9 +19,15 @@ import javafx.stage.Window;
 import mbio.ncct.ont.MainApp;
 import mbio.ncct.ont.model.BaseCallingModel;
 import mbio.ncct.ont.util.BashUtil;
+import mbio.ncct.ont.util.PipelineUtil;
 import mbio.ncct.ont.view.AdvancedBasecallingController;
 
-
+/**
+ * This is the base calling controller class for pipeline base calling view.
+ * 
+ * @author Yan Zhou
+ * created on 2019/06/18
+ */
 public class BaseCallingController {
   
   /** Initializes log4j2. */
@@ -42,11 +49,17 @@ public class BaseCallingController {
   @FXML
   private ChoiceBox<String> cbKitNumber = new ChoiceBox<String>();
   
+  /** Initializes a BashUtil object. */
   private BashUtil bUtil = new BashUtil();
   
+  /** Initializes base calling model. */
   public BaseCallingModel bcm = new BaseCallingModel();
 
+  /** Window mainApp. */
   private Window mainApp;
+  
+  /** Initializes a PipelineUtil object. */
+  private PipelineUtil pUtil = new PipelineUtil();
   
   /**
    * Is called by the main application to give a reference back to itself.
@@ -57,7 +70,7 @@ public class BaseCallingController {
   }
   
   /**
-   * Initializes the controller of base calling overview.
+   * Initializes the controller of base calling setting overview.
    */
   @FXML
   private void initialize()  { 
@@ -65,7 +78,7 @@ public class BaseCallingController {
     
     ObservableList<String> olFlowcellIds = FXCollections.observableArrayList(bUtil.getFlowcellIds());
     cbFlowcellId.setItems(olFlowcellIds);
-    if(olFlowcellIds.contains("FLO-MIN106")) {
+    if(olFlowcellIds.contains("FLO-PRO001")) {
       cbFlowcellId.getSelectionModel().select("FLO-PRO001");
     } else {
       cbFlowcellId.getSelectionModel().selectFirst();
@@ -135,5 +148,21 @@ public class BaseCallingController {
     } catch (Exception e) {
       logger.error("Can not load advanced base calling view. " + e);
     }
+  }
+  
+  /**
+   * Shows the hint of Flowcell ID setting.
+   */
+  @FXML
+  private void showFlowcellIdHint() {
+    pUtil.createAlertDialog(AlertType.INFORMATION, "Flowcell ID", "Choose a Flowcell ID from the select list.");
+  }
+  
+  /**
+   * Shows the hint of Kit Number setting.
+   */
+  @FXML
+  private void showKitNumberHint() {
+    pUtil.createAlertDialog(AlertType.INFORMATION, "Kit Number", "Choose a Kit Number from the select list.");
   }
 }

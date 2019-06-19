@@ -15,6 +15,12 @@ import javafx.stage.Window;
 import mbio.ncct.ont.MainApp;
 import mbio.ncct.ont.model.PolishingModel;
 
+/**
+ * This is the controller for polishing setting view.
+ *
+ * @author Yan Zhou
+ * created on 2019/06/17
+ */
 public class PolishingController {
   
   /** Initializes log4j2. */
@@ -28,12 +34,14 @@ public class PolishingController {
   @FXML
   private CheckBox cPolishing;
   
+  /** Initializes PolishingModel.  */
   public PolishingModel pm = new PolishingModel();
 
+  /** Window mainApp.  */
   private Window mainApp;
   
   /**
-   * Initializes the controller of pipeline overview.
+   * Initializes the controller of polishing setting view.
    */
   @FXML
   private void initialize()  { 
@@ -87,5 +95,4 @@ public class PolishingController {
       logger.error("Can not load advanced polishing view. " + e);
     }
   }
-  
 }

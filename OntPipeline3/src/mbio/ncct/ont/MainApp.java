@@ -12,10 +12,16 @@ import javafx.stage.Stage;
 import mbio.ncct.ont.util.PipelineUtil;
 import mbio.ncct.ont.view.PipelineOverviewController;
 
+/**
+ * This is the MainApp class of the ONT pipeline GUI.
+ * 
+ * @author Yan Zhou
+ * created on 2019/05/16
+ */
 public class MainApp extends Application {
   
   /** Initializes primary stage. */
-  public Stage primaryStage;
+  private Stage primaryStage;
   
   /** Initializes root layout. */
   private BorderPane rootLayout;
@@ -51,7 +57,7 @@ public class MainApp extends Application {
   }
   
   /**
-   * Initializes the overview layout.
+   * Initializes the pipeline overview layout.
    */
   private void showPipelineOverview() {   
     try {
@@ -72,5 +78,4 @@ public class MainApp extends Application {
   public static void main(String[] args) {
     launch(args);
   }
-
 }

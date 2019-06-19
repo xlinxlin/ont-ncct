@@ -63,7 +63,7 @@ public class AdvancedReadsFilterController {
   }
   
   /**
-   * Set the advanced reads filter setting dialog stage.
+   * Sets the advanced reads filter setting dialog stage.
    * @param dialogStage advanced reads filter setting dialog stage
    */
   public void setDialogStage(Stage dialogStage) {

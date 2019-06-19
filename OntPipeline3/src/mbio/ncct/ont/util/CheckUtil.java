@@ -111,10 +111,11 @@ public class CheckUtil {
   }
   
   /**
-   * Checks if polishing with Illumina reads.
-   * @param gm A GeneralModel object.
-   * @param pm A PolishingModel object.
-   * @return true if polishing with Illumina reads.
+   * Checks if device with the correct flowcell ID when guppy_basecaller fast mode is used.<br>
+   * Correct combinations:<br>
+   * "PromethION" with "FLO-PRO", "MinION/GridION/MinIT" with "FLO-MIN" 
+   * @param bcm A BaseCallingModel object.
+   * @return true if device with the correct flowcell ID when guppy_basecaller fast mode is used.
    */
   public Boolean checkDeviceWithCorrectFlowcellInFasfMode(BaseCallingModel bcm) {
     return bcm.getIfGuppyFast() ? 
@@ -171,7 +172,9 @@ public class CheckUtil {
   }
   
   /**
-   * Checks the Illumina reads directory.
+   * Checks the Illumina reads directory.<br>
+   * Illumina reads name structure example:<br>
+   * ID40_HQ_1.fastq.gz ID40_HQ_2.fastq.gz
    * @param illuminaDirectory the path to the Illumina reads directory.
    * @return the Boolean value if the Illumina reads directory is valid. 
    */
@@ -200,7 +203,9 @@ public class CheckUtil {
   }
   
   /**
-   * Checks if the sample sheet has the correct content.
+   * Checks if the sample sheet has the correct content.<br>
+   * Sample sheet example see: <br>
+   * https://ontpipeline2.readthedocs.io/en/latest/InputFileStructure.html#sample-sheet
    * @param sampleSheet the String of sample sheet file path
    * @param extension the String of the sample sheet extension.
    * @return the Boolean value if the sample sheet correct is.

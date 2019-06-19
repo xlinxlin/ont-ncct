@@ -1,6 +1,5 @@
 package mbio.ncct.ont.view;
 
-
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.IndexedCheckModel;
 import javafx.collections.FXCollections;
@@ -8,11 +7,18 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
 import mbio.ncct.ont.model.DemultiplexingModel;
 import mbio.ncct.ont.util.BashUtil;
 import mbio.ncct.ont.util.PipelineUtil;
 
+/**
+ * This is the demultiplexing controller class for pipeline demultiplexing view.
+ * 
+ * @author Yan Zhou
+ * created on 2019/06/18
+ */
 public class DemultiplexingController {
   
   /** Initializes check combo box for barcode kits. */
@@ -27,14 +33,17 @@ public class DemultiplexingController {
   @FXML
   private CheckBox cDemultiplexing;
   
+  /** Initializes demultiplexing model. */
   public DemultiplexingModel dm = new DemultiplexingModel();
   
+  /** Initializes a BashUtil object. */
   private BashUtil bUtil = new BashUtil();
   
+  /** Initializes a PipelineUtil object. */
   private PipelineUtil pUtil = new PipelineUtil();
   
   /**
-   * Initializes the controller of base calling overview.
+   * Initializes the controller of demultiplexing setting view.
    */
   @FXML
   private void initialize()  { 
@@ -64,5 +73,12 @@ public class DemultiplexingController {
       }
     });
   }
-
+  
+  /**
+   * Shows the hint of Barcode Kits Number setting.
+   */
+  @FXML
+  private void showBarcodeKitsNumberHint() {
+    pUtil.createAlertDialog(AlertType.INFORMATION, "Barcode Kits Number", "Choose one or several barcode kit(s) from the list if used.");
+  }
 }

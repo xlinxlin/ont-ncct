@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.Region;
 
 /**
  * This is the PipelineUtil class for utilities used in Pipeline.
@@ -45,9 +46,11 @@ public class PipelineUtil {
   }
   
   /**
-   * Formats the HashMap of sample sheet content to String.
+   * Formats the HashMap of sample sheet content to String. <br>
+   * Return value example:<br>
+   * (['barcode01']='MW_1' ['barcode02']='MW23' ['barcode03']='AA_45' )
    * @param hmSampleSheet the sample sheet content in HashMap format.
-   * @return formatted String of sample sheet content (HashMap in Bash).#(['barcode01']='MW_1' ['barcode02']='MW23' ['barcode03']='AA_45' )
+   * @return formatted String of sample sheet content (HashMap in Bash).
    */
   public String formatSampleSheetContent(HashMap<String,String> hmSampleSheet) {
     String result = null;
@@ -67,11 +70,14 @@ public class PipelineUtil {
     Alert alert = new Alert(alertType);
     alert.setTitle(alertTitle);
     alert.setContentText(alertContent);
+    alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
     alert.showAndWait();
   }
   
   /**
-   * Formats the String of selected barcodes.
+   * Formats the String of selected barcodes.<br>
+   * Input example: 1,2,3,5<br>
+   * Output example: barcode{01,02,03,05}/
    * @param selectedBarcode selected barcodes.
    * @return formatted String of selected barcodes.
    */
@@ -122,7 +128,9 @@ public class PipelineUtil {
   }
   
   /**
-   * Formats the String of barcodeKits.
+   * Formats the String of barcodeKits.<br>
+   * Input example: [EXP-NBD104, EXP-NBD114] <br>
+   * Output example: "EXP-NBD104, EXP-NBD114"
    * @param barcodeKits selected barcode kits.
    * @return formatted String of barcode kits.
    */

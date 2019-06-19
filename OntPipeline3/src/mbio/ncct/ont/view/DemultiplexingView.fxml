@@ -12,7 +12,7 @@
       <Group fx:id="gpDemultiplexing" layoutX="143.0" layoutY="9.0">
          <children>
           <CheckComboBox fx:id="ccbBarcodeKits" layoutY="17.0" prefHeight="26.0" prefWidth="363.0" />
-          <Label layoutX="4.0" text="Barcode Kits Number:" />
+          <Label layoutX="4.0" onMouseClicked="#showBarcodeKitsNumberHint" text="Barcode Kits Number (?):" />
          </children>
       </Group>
   </children>

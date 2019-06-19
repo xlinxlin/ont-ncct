@@ -1,10 +1,8 @@
 package mbio.ncct.ont.view;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javafx.fxml.FXML;
@@ -31,52 +29,77 @@ public class PipelineOverviewController {
   /** Initializes MainApp. */
   public MainApp mainApp;
   
+  /** Initializes Parent pane generalView. */
   @FXML
   private Parent generalView;
   
+  /** Initializes Parent pane baseCallingView. */
   @FXML
-  public Parent baseCallingView;
+  private Parent baseCallingView;
   
+  /** Initializes Parent pane demultiplexingView. */
   @FXML
-  public Parent demultiplexingView;
+  private Parent demultiplexingView;
   
+  /** Initializes Parent pane readsFilterView. */
   @FXML
-  public Parent readsFilterView;
+  private Parent readsFilterView;
   
+  /** Initializes Parent pane assemblyView. */
   @FXML
-  public Parent assemblyView;
+  private Parent assemblyView;
   
+  /** Initializes Parent pane polishingView. */
   @FXML
-  public Parent polishingView;
+  private Parent polishingView;
   
+  /** Initializes general view setting controller. */
   @FXML
   private GeneralController generalViewController;
   
+  /** Initializes base calling view setting controller. */
   @FXML
-  public BaseCallingController baseCallingViewController;
+  private BaseCallingController baseCallingViewController;
   
+  /** Initializes demultiplexing view setting controller. */
   @FXML
-  public DemultiplexingController demultiplexingViewController;
+  private DemultiplexingController demultiplexingViewController;
   
+  /** Initializes reads filter view setting controller. */
   @FXML
-  public ReadsFilterController readsFilterViewController;
+  private ReadsFilterController readsFilterViewController;
   
+  /** Initializes assembly view setting controller. */
   @FXML
-  public AssemblyController assemblyViewController;
+  private AssemblyController assemblyViewController;
   
+  /** Initializes polishing view setting controller. */
   @FXML
-  public PolishingController polishingViewController;
+  private PolishingController polishingViewController;
   
+  /** Initializes TextArea taQstat to show the result from command qstat. */
   @FXML
   private TextArea taQstat;
   
+  /** Initializes a BashUtil object. */
   private BashUtil bUtil = new BashUtil();
   
+  /** Initializes a CheckUtil object. */
   private CheckUtil ckUtil = new CheckUtil();
   
+  /** Initializes a PipelineUtil object. */
   private PipelineUtil pUtil = new PipelineUtil();
   
+  /** Initializes a FileUtil object. */
   private FileUtil fUtil = new FileUtil();
+  
+  /**
+   * Initializes the controller of pipeline overview.
+   */
+  @FXML
+  private void initialize()  { 
+    getQstat();
+  }
   
   /**
    * Called when start pipeline button is clicked.
@@ -89,12 +112,11 @@ public class PipelineOverviewController {
    * 06. User selects "Base calling" but the ONT directory contains no FAST5 file.
    * 07. User selects "Hybrid assembly" but the Illumina reads directory is empty.
    * 08. User selects "Polishing" but the Illumina reads directory is empty.
-   * #09. User uploads FAST5 files but do not select "Base calling".
-   * 10. User starts the pipeline from "Assembly(hybrid)"/"Polishing", but the prefixes of ONT reads (FASTQ) do not match the prefixes of Illumina reads.
-   * 11. Guppy_basecaller is in fast mode, the Flowcell ID does not match the device. (PromethION should match FLO-PRO* and MinION* should match FLO-MIN*.)
+   * 09. User starts the pipeline from "Assembly(hybrid)"/"Polishing", but the prefixes of ONT reads (FASTQ) do not match the prefixes of Illumina reads.
+   * 10. Guppy_basecaller is in fast mode, the Flowcell ID does not match the device. (PromethION should match FLO-PRO* and MinION* should match FLO-MIN*.)
    */
   @FXML
-  private void test() {
+  private void startPipeline() {
     if (!ckUtil.checkOntDirIsNotEmpty(generalViewController.gm)) {
       pUtil.createAlertDialog(AlertType.ERROR, "Error code 01", "Nanopore reads directory can not be empty.");
     } else if (!ckUtil.checkOutDirIsNotEmpty(generalViewController.gm)) {
@@ -119,18 +141,24 @@ public class PipelineOverviewController {
       String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
       fUtil.createUserLog(generalViewController.gm, baseCallingViewController.bcm, demultiplexingViewController.dm, readsFilterViewController.rfm, assemblyViewController.am, polishingViewController.pm, timestamp);
       fUtil.createPbsFile(generalViewController.gm, baseCallingViewController.bcm, demultiplexingViewController.dm, readsFilterViewController.rfm, assemblyViewController.am, polishingViewController.pm, timestamp);
+      /*
       try {
         //Runtime.getRuntime().exec(new String[] {"bash","-c","qsub -k oe -N Ont_Pipeline_" + timestamp + " " + generalViewController.gm.getOutputPath() + "/pipelineWithLoop_" + timestamp + ".pbs" });
       } catch (Exception e) {
         logger.error("Can not run PBS file. " + e);
       }
+      */
+      bUtil.runPbsScript(generalViewController.gm.getOutputPath(), timestamp);
       pUtil.createAlertDialog(AlertType.INFORMATION, "Submitted.", "Your job has been submitted successfully.");
       getQstat();
+      /*)
       try {
         Runtime.getRuntime().exec(new String[] {"bash","-c","gnome-terminal -- sh -c 'tail -F /home/sysgen/Ont_Pipeline_" + timestamp + ".o*'" });
       } catch (Exception e) {
         logger.error("Can not open terminal to show log. " + e);
       }
+      */
+      bUtil.runLogsInConsole(timestamp);
     }
   }
 

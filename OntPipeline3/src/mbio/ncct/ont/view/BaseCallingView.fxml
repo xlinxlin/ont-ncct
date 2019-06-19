@@ -23,10 +23,10 @@
                </tooltip>
             </ChoiceBox>
             <Button layoutX="385.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleAdvancedBasecalling" prefHeight="26.0" prefWidth="99.0" text="Advanced" />
-            <Label layoutX="4.0" text="Flowcell ID:" />
-            <Label layoutX="202.0" text="Kit Number:" />
+            <Label layoutX="4.0" onMouseClicked="#showFlowcellIdHint" text="Flowcell ID (?):" />
+            <Label layoutX="202.0" onMouseClicked="#showKitNumberHint" text="Kit Number (?):" />
          </children>
       </Group>
-      <CheckBox fx:id="cBasecalling" layoutX="17.0" layoutY="28.0" mnemonicParsing="false" text="Base calling" />
+      <CheckBox fx:id="cBasecalling" layoutX="17.0" layoutY="28.0" mnemonicParsing="false" text="Base Calling" />
    </children>
 </AnchorPane>

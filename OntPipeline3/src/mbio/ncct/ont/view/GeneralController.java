@@ -12,7 +12,7 @@ import mbio.ncct.ont.util.CheckUtil;
 import mbio.ncct.ont.util.PipelineUtil;
 
 /**
- * GeneralController The controller for pipeline general setting.
+ * This is the controller for pipeline general setting view.
  *
  * @author Yan Zhou
  * created on 2019/06/17
@@ -47,13 +47,20 @@ public class GeneralController {
   @FXML
   private TextField tfSampleSheet;
   
+  /** Initializes a CheckUtil object. */
   private CheckUtil ckUtil = new CheckUtil();
   
+  /** Initializes a PipelineUtil object. */
   private PipelineUtil pUtil = new PipelineUtil();
     
+  /** Initializes General Model. */
   public GeneralModel gm = new GeneralModel();
   
-  public void initialize()  { 
+  /**
+   * Initializes the controller of general setting view.
+   */
+  @FXML
+  private void initialize()  { 
     tfThreads.setText(gm.getThreads());
     
     tfPrefix.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -88,7 +95,7 @@ public class GeneralController {
   /**
    * Called when select Nanopore reads workspace button is clicked.
    * Error check:
-   * No FAST5 or FASTQ file is found in the directory.
+   * 01. No FAST5 or FASTQ file is found in the directory.
    */
   @FXML
   private void handleSelectNanoporeWorkspace() {
@@ -98,15 +105,17 @@ public class GeneralController {
       if (ckUtil.checkDirectoryValidity(selectedDirectory,"fast5") || ckUtil.checkDirectoryValidity(selectedDirectory,"fastq")) {
         tfNanoporeWorkspace.setText(selectedDirectory.toString()); 
       } else {
-        pUtil.createAlertDialog(AlertType.ERROR, "Wrong ONT workspace.", "No FAST5/FASTQ files found in this directory.");
+        tfNanoporeWorkspace.setText("");
+        pUtil.createAlertDialog(AlertType.ERROR, "Wrong ONT workspace.", "No FAST5/FASTQ file(s) found in this directory.");
       }
     } 
   }
   
   /**
    * Called when select Illumina reads workspace button is clicked.
+   * If the check is pass and there is only one pair of Illumina reads, set the Prefix to this pair of Illumina reads.
    * Error check:
-   * The name structure is wrong.
+   * 01. The name structure is wrong.
    */
   @FXML
   private void handleSelectIlluminaWorkspace() {

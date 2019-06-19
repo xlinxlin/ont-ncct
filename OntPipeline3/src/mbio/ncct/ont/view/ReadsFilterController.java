@@ -15,6 +15,12 @@ import javafx.stage.Window;
 import mbio.ncct.ont.MainApp;
 import mbio.ncct.ont.model.ReadsFilterModel;
 
+/**
+ * This is the controller for reads filter setting view.
+ *
+ * @author Yan Zhou
+ * created on 2019/06/17
+ */
 public class ReadsFilterController {
   
   /** Initializes log4j2. */
@@ -28,12 +34,14 @@ public class ReadsFilterController {
   @FXML
   private CheckBox cReadsFilter;
   
+  /** Initializes ReadsFilterModel. */
   public ReadsFilterModel rfm = new ReadsFilterModel();
   
+  /** Window mainApp. */
   private Window mainApp;
   
   /**
-   * Initializes the controller of pipeline overview.
+   * Initializes the controller of reads filter setting view.
    */
   @FXML
   private void initialize()  { 
@@ -92,5 +100,4 @@ public class ReadsFilterController {
       logger.error("Can not load advanced reads filter view. " + e);
     }
   }
-
 }

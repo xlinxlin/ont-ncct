@@ -34,7 +34,7 @@
          <Separator layoutX="1.0" layoutY="63.0" prefHeight="3.0" prefWidth="643.0" />
     </Pane>
     <Hyperlink layoutX="27.0" layoutY="518.0" onAction="#handleOpenDocument" text="https://ontpipeline2.readthedocs.io/" AnchorPane.leftAnchor="27.0" AnchorPane.topAnchor="515.0" />
-    <Button layoutX="538.0" layoutY="515.0" mnemonicParsing="false" onAction="#test" prefHeight="26.0" prefWidth="101.0" text="Start" AnchorPane.topAnchor="515.0" />
-    <TextArea fx:id="taQstat" editable="false" layoutX="10.0" layoutY="552.0" onMouseEntered="#getQstat" prefHeight="118.0" prefWidth="643.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+    <Button layoutX="538.0" layoutY="515.0" mnemonicParsing="false" onAction="#startPipeline" prefHeight="26.0" prefWidth="101.0" text="Start" AnchorPane.topAnchor="515.0" />
+    <TextArea fx:id="taQstat" editable="false" layoutX="10.0" layoutY="560.0" onMouseEntered="#getQstat" prefHeight="118.0" prefWidth="633.0" AnchorPane.leftAnchor="20.0"  />
   </children>
 </AnchorPane>

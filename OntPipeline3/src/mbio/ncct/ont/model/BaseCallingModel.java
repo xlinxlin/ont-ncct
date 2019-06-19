@@ -13,11 +13,11 @@ import javafx.beans.property.StringProperty;
  */
 public class BaseCallingModel {
   
-  /** Initializes and sets if basecalling will be used. */
+  /** Initializes and sets if base calling will be used. */
   private final BooleanProperty ifBasecalling = new SimpleBooleanProperty(true);
   
   /** Initializes and sets the flowcell ID. */
-  private final StringProperty flowcellId = new SimpleStringProperty("FLO-MIN106");
+  private final StringProperty flowcellId = new SimpleStringProperty("FLO-PRO001");
   
   /** Initializes and sets the kit number. */
   private final StringProperty kitNumber = new SimpleStringProperty("SQK-LSK109");
@@ -31,21 +31,20 @@ public class BaseCallingModel {
   /** Initializes and sets if Guppy fast mode will be used. */
   private final BooleanProperty ifGuppyFast = new SimpleBooleanProperty(false);
   
-  
-  /** Initializes and sets Guppy .cfg configuration file. */
+  /** Initializes and sets Guppy CFG configuration file. */
   private final StringProperty guppyCfgFile = new SimpleStringProperty("");
   
   /**
-   * Sets if basecalling will be used.
-   * @param ifBasecalling the Boolean value of if basecalling will be used.
+   * Sets if base calling will be used.
+   * @param ifBasecalling the Boolean value of if base calling will be used.
    */
   public void setIfBasecalling(Boolean ifBasecalling) {
     this.ifBasecalling.set(ifBasecalling);
   }
   
   /**
-   * Gets if basecalling will be used.
-   * @return the String of if basecalling will be used.
+   * Gets if base calling will be used.
+   * @return the Boolean value of if base calling will be used.
    */
   public Boolean getIfBasecalling() {
     return ifBasecalling.get();
@@ -100,16 +99,16 @@ public class BaseCallingModel {
   }
   
   /**
-   * Gets the nanopore device.
-   * @return the String of the nanopore device.
+   * Gets the Nanopore device.
+   * @return the String of the Nanopore device.
    */
   public String getDevice() {
     return device.get();
   }
   
   /**
-   * Sets the nanopore device.
-   * @param device the String of the nanopore device.
+   * Sets the Nanopore device.
+   * @param device the String of the Nanopore device.
    */
   public void setDevice(String device) {
     this.device.set(device);

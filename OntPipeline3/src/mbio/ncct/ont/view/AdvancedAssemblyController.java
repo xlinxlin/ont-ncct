@@ -15,7 +15,7 @@ public class AdvancedAssemblyController {
   /** The dialog stage of advanced assembly setting. */
   private Stage dialogStage;
   
-  /** The check box for if a .vcf file will be produced. */
+  /** The check box for if a VCF file will be produced. */
   @FXML
   public CheckBox cVcf;
   
@@ -56,8 +56,8 @@ public class AdvancedAssemblyController {
   }
   
   /**
-   * Sets the check box if a .vcf file will be produced.
-   * @param ifVcf the Boolean value of if a .vcf file will be produced.
+   * Sets the check box if a VCF file will be produced.
+   * @param ifVcf the Boolean value of if a VCF file will be produced.
    */
   public void setIfVcf(boolean ifVcf) {
     cVcf.setSelected(ifVcf);

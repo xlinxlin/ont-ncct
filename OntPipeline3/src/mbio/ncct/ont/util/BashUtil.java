@@ -9,7 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * This is the pipeline utilities with bash scripts.
+ * This is the pipeline utilities with bash commands.
  * 
  * @author Yan Zhou
  * created on 2019/06/18
@@ -19,8 +19,8 @@ public class BashUtil {
   /** Initializes log4j2. */
   private static Logger logger = LogManager.getLogger(BashUtil.class);
   
-  /** Sets Guppy location. */
-  private static String guppyUrl = "/opt/ont-guppy-cpu_3.1.5";
+  /** Initializes a ReadPropertyUtil object. */
+  private ReadPropertyUtil rpUtil = new ReadPropertyUtil();
   
   /**
    * Gets all flowcell IDs.
@@ -31,7 +31,7 @@ public class BashUtil {
     ArrayList<String> arFlowcellIds = new ArrayList<String>();
     Process p = null;
     try {
-      p = Runtime.getRuntime().exec(new String[] { "bash", "-c", guppyUrl + "/bin/guppy_basecaller --print_workflows | awk 'NR>2 {print $1}' | sort | uniq" });
+      p = Runtime.getRuntime().exec(new String[] { "bash", "-c", rpUtil.getGuppyUrl() + "/bin/guppy_basecaller --print_workflows | awk 'NR>2 {print $1}' | sort | uniq" });
     } catch (Exception e) {
       logger.error("Can not get flowcell IDs. " + e);
     }
@@ -58,7 +58,7 @@ public class BashUtil {
     ArrayList<String> arKitNumbers = new ArrayList<String>();
     Process p = null;
     try {
-      p = Runtime.getRuntime().exec(new String[] { "bash", "-c", guppyUrl + "/bin/guppy_basecaller --print_workflows | awk 'NR>2 {print $2}' | sort | uniq" });
+      p = Runtime.getRuntime().exec(new String[] { "bash", "-c", rpUtil.getGuppyUrl() + "/bin/guppy_basecaller --print_workflows | awk 'NR>2 {print $2}' | sort | uniq" });
     } catch (Exception e) {
       logger.error("Can not get kit numbers. " + e);
     }
@@ -77,7 +77,9 @@ public class BashUtil {
   }
   
   /**
-   * Gets all the combinations of flowcell ID and kit number.
+   * Gets all the combinations of flowcell ID and kit number.<br>
+   * Return value Map<String, String>, key is FlowcellIdKitNumber, value is CFG file name. <br>
+   * Output example: {FLO-FLG001SQK-PSK004=dna_r9.4.1_450bps_hac, FLO-FLG001SQK-LWP001=dna_r9.4.1_450bps_hac, FLO-MIN106SQK-DCS109=dna_r9.4.1_450bps_hac, ...}
    * @return a map with all the combinations of flowcell ID and kit number.
    */
   public Map<String, String> getCombinationFlowcellKit() {
@@ -85,7 +87,7 @@ public class BashUtil {
     Map<String, String> m = new HashMap<String, String>();
     Process p = null;
     try {
-      p = Runtime.getRuntime().exec(new String[] { "bash", "-c", guppyUrl + "/bin/guppy_basecaller --print_workflows | awk 'NR>2 {print $1,$2,$3,$4}' " });
+      p = Runtime.getRuntime().exec(new String[] { "bash", "-c", rpUtil.getGuppyUrl() + "/bin/guppy_basecaller --print_workflows | awk 'NR>2 {print $1,$2,$3,$4}' " });
     } catch (Exception e) {
       logger.error("Can not run command: guppy_basecaller --print_workflows . " + e);
     }
@@ -114,7 +116,7 @@ public class BashUtil {
     ArrayList<String> arBarcodeKits = new ArrayList<String>();
     Process p = null;
     try {
-      p = Runtime.getRuntime().exec(new String[] { "bash", "-c", guppyUrl + "/bin/guppy_barcoder --print_kits | awk 'NR>1 {print $1}' | sort | uniq" });
+      p = Runtime.getRuntime().exec(new String[] { "bash", "-c", rpUtil.getGuppyUrl() + "/bin/guppy_barcoder --print_kits | awk 'NR>1 {print $1}' | sort | uniq" });
     } catch (Exception e) {
       logger.error("Can not get barcode kits. " + e);
     }
@@ -155,5 +157,30 @@ public class BashUtil {
       logger.error("Can not read qstat result. " + e);
     }
     return alResult;
+  }
+  
+  /**
+   * Runs the PBS script.
+   * @param pbsScriptPath the path to the PBS script.
+   * @param timestamp the String format of timestamp.
+   */  
+  public void runPbsScript(String pbsScriptPath, String timestamp) {
+    try {
+      Runtime.getRuntime().exec(new String[] {"bash","-c","qsub -k oe -N Ont_Pipeline_" + timestamp + " " + pbsScriptPath + "/pipelineWithLoop_" + timestamp + ".pbs" });
+    } catch (Exception e) {
+      logger.error("Can not run PBS file. " + e);
+    }
+  }
+  
+  /**
+   * Runs the logs in a console.
+   * @param timestamp the String format of timestamp.
+   */  
+  public void runLogsInConsole(String timestamp) {
+    try {
+      Runtime.getRuntime().exec(new String[] {"bash","-c","gnome-terminal -- sh -c 'tail -F " + rpUtil.getRootUrl() + "/Ont_Pipeline_" + timestamp + ".o*'" });
+    } catch (Exception e) {
+      logger.error("Can not open terminal to show log. " + e);
+    }
   }
 }
