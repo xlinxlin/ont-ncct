@@ -86,7 +86,13 @@ public class CheckUtil {
    * @return true if base calling with FAST5 files.
    */
   public Boolean checkBaseCallingWithFast5(BaseCallingModel bcm, GeneralModel gm) {
-    return bcm.getIfBasecalling() && checkDirectoryValidity(new File(gm.getOntReadsWorkspace()), "fast5");
+    Boolean result = false;
+    if(bcm.getIfBasecalling()) {
+      result = checkDirectoryValidity(new File(gm.getOntReadsWorkspace()), "fast5") ? true : false;
+    } else {
+      result = checkDirectoryValidity(new File(gm.getOntReadsWorkspace()), "fast5") ? false : true;
+    }
+    return result;
   }
   
   /**
@@ -107,7 +113,7 @@ public class CheckUtil {
    * @return true if polishing with Illumina reads.
    */
   public Boolean checkPolishingWithIlluminaReads(PolishingModel pm, GeneralModel gm) {
-    return pm.getIfPolishing() && !gm.getIlluminaReadsWorkspace().isEmpty();
+    return pm.getIfPolishing() ? ( gm.getIlluminaReadsWorkspace().isEmpty() ? false : true) : true;
   }
   
   /**

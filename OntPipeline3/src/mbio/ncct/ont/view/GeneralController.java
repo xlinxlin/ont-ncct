@@ -166,6 +166,7 @@ public class GeneralController {
       if (ckUtil.checkSampleSheet(sSampleSheet, sExtension)) {
         tfSampleSheet.setText(sSampleSheet);
         gm.setSampleSheetContent(pUtil.formatSampleSheetContent(pUtil.getSampleSheetContent(sSampleSheet, sExtension)));
+        gm.setSampleSheetPath(sSampleSheet);
       } else {
         pUtil.createAlertDialog(AlertType.ERROR, "Wrong sample sheet.", "The format of sample sheet is wrong.");
       };

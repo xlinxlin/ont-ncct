@@ -53,7 +53,7 @@ public class PipelineUtil {
    * @return formatted String of sample sheet content (HashMap in Bash).
    */
   public String formatSampleSheetContent(HashMap<String,String> hmSampleSheet) {
-    String result = null;
+    String result = "";
     for(Map.Entry<String, String> entry : hmSampleSheet.entrySet()) {
       result = result + "['" + entry.getKey() + "']='" + entry.getValue() + "' ";  
     }
