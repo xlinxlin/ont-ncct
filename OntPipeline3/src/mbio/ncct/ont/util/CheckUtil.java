@@ -67,7 +67,7 @@ public class CheckUtil {
    * @return true if at least one module is selected.
    */
   public Boolean checkAtLeastOneModuleIsSelected(BaseCallingModel bcm, DemultiplexingModel dm, ReadsFilterModel rfm, AssemblyModel am, PolishingModel pm) {
-    return bcm.getIfBasecalling() || bcm.getIfBasecalling() || rfm.getIfReadsFilter() || am.getIfAssembly() || pm.getIfPolishing();
+    return bcm.getIfBasecalling() || dm.getIfDemultiplexing() || rfm.getIfReadsFilter() || am.getIfAssembly() || pm.getIfPolishing();
   }
   
   /**
