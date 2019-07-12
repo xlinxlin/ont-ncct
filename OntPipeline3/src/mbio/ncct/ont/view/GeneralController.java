@@ -122,8 +122,16 @@ public class GeneralController {
     DirectoryChooser directoryChooser = new DirectoryChooser();
     File selectedDirectory = directoryChooser.showDialog(null);
     if (selectedDirectory != null) {
-      if (ckUtil.checkIlluminaReads(selectedDirectory)) {
+      if (ckUtil.checkIlluminaReadsWithHq(selectedDirectory)) {
         tfIlluminaWorkspace.setText(selectedDirectory.toString()); 
+        if (pUtil.getIlluminaReadsPrefix(selectedDirectory).size() == 1) {
+          tfPrefix.setText(pUtil.getIlluminaReadsPrefix(selectedDirectory).get(0));
+        } else {
+          tfPrefix.setText("");
+        }
+      } else if (ckUtil.checkIlluminaReadsWithoutHq(selectedDirectory)) {
+        tfIlluminaWorkspace.setText(selectedDirectory.toString()); 
+        pUtil.createAlertDialog(AlertType.INFORMATION, "", "Illumina reads will be trimmed.");
         if (pUtil.getIlluminaReadsPrefix(selectedDirectory).size() == 1) {
           tfPrefix.setText(pUtil.getIlluminaReadsPrefix(selectedDirectory).get(0));
         } else {

@@ -67,6 +67,7 @@ public class FileUtil {
     
     content = content.replaceAll("\\$ONTWORKSPACE", gm.getOntReadsWorkspace())
         .replaceAll("\\$ILLUMINAWORKSPACE", gm.getIlluminaReadsWorkspace())
+        .replaceAll("\\$IF_TRIMILLUMINAREADS", gm.getIfTrimIlluminaReads().toString())
         .replaceAll("\\$OUTPUTPATH", gm.getOutputPath())
         .replaceAll("\\$IF_BASECALLING", bcm.getIfBasecalling().toString())
         .replaceAll("\\$FLOWCELL_ID", bcm.getFlowcellId())
@@ -123,6 +124,9 @@ public class FileUtil {
       writer.append("====General Settings====\n");
       writer.append("Nanopore reads directory: " + gm.getOntReadsWorkspace() + "\n");
       writer.append("Illumina reads directory: " + (gm.getIlluminaReadsWorkspace().isEmpty() ? "Not given." : gm.getIlluminaReadsWorkspace()) + "\n");
+      if (!gm.getIlluminaReadsWorkspace().isEmpty()) {
+        writer.append("Trim Illumina reads:" + gm.getIfTrimIlluminaReads().toString());
+      }
       writer.append("Output directory: " + gm.getOutputPath() + "\n");
       writer.append("Sample sheet path: " + (gm.getSampleSheetPath().isEmpty() ? "Not given." : gm.getSampleSheetPath()) + "\n");
       writer.append("Prefix: " + (gm.getPrefix().isEmpty() ? "Not given." : gm.getPrefix()) + "\n");

@@ -1,5 +1,7 @@
 package mbio.ncct.ont.model;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -34,6 +36,9 @@ public class GeneralModel {
   
   /** Initializes and sets the prefix. */
   private final StringProperty prefix = new SimpleStringProperty("");
+  
+  /** Initializes and sets if Illumina reads trimming necessary. */
+  private final BooleanProperty ifTrimIlluminaReads = new SimpleBooleanProperty(true);
   
   /**
    * Gets the ONT reads workspace.
@@ -161,5 +166,21 @@ public class GeneralModel {
    */
   public void setThreads(String threads) {
     this.threads.set(threads);
+  }
+  
+  /**
+   * Sets if Illumina reads will be trimmed.
+   * @param ifTrimIlluminaReas the Boolean value of if Illumina reads will be trimmed.
+   */
+  public void setIfTrimIlluminaReads(Boolean ifTrimIlluminaReads) {
+    this.ifTrimIlluminaReads.set(ifTrimIlluminaReads);
+  }
+  
+  /**
+   * Gets if Illumina reads will be trimmed.
+   * @return the Boolean value of if Illumina reads will be trimmed.
+   */
+  public Boolean getIfTrimIlluminaReads() {
+    return ifTrimIlluminaReads.get();
   }
 }

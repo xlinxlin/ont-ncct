@@ -179,12 +179,12 @@ public class CheckUtil {
   
   /**
    * Checks the Illumina reads directory.<br>
-   * Illumina reads name structure example:<br>
+   * Illumina reads name structure (trimming free) example:<br>
    * ID40_HQ_1.fastq.gz ID40_HQ_2.fastq.gz
    * @param illuminaDirectory the path to the Illumina reads directory.
    * @return the Boolean value if the Illumina reads directory is valid. 
    */
-  public Boolean checkIlluminaReads(File illuminaDirectory) {
+  public Boolean checkIlluminaReadsWithHq(File illuminaDirectory) {
     Boolean validity = true;
     File[] f = illuminaDirectory.listFiles();
     ArrayList<String> alFR1 = new ArrayList<String>();
@@ -195,6 +195,37 @@ public class CheckUtil {
         if(f[i].getName().matches(".*_HQ_1\\.fastq\\.gz") && !alFR1.contains(prefix)) {
           alFR1.add(prefix);
         } else if (f[i].getName().matches(".*_HQ_2\\.fastq\\.gz") && !alFR2.contains(prefix)) {
+          alFR2.add(prefix);
+        } else {
+          validity = false;
+          break;
+        }
+      }
+    }
+    if ( !alFR1.containsAll(alFR2) || !alFR2.containsAll(alFR1) || alFR1.isEmpty()) {
+      validity = false;
+    }
+    return validity;
+  }
+  
+  /**
+   * Checks the Illumina reads directory.<br>
+   * Illumina reads name structure (must trimming) example:<br>
+   * ID40_1.fastq.gz ID40_2.fastq.gz
+   * @param illuminaDirectory the path to the Illumina reads directory.
+   * @return the Boolean value if the Illumina reads directory is valid. 
+   */
+  public Boolean checkIlluminaReadsWithoutHq(File illuminaDirectory) {
+    Boolean validity = true;
+    File[] f = illuminaDirectory.listFiles();
+    ArrayList<String> alFR1 = new ArrayList<String>();
+    ArrayList<String> alFR2 = new ArrayList<String>();
+    for (int i = 0; i < f.length; i++) {
+      if (f[i].isFile() && f[i].getName().contains("_")) {
+        String prefix = f[i].getName().substring(0, f[i].getName().indexOf("_"));
+        if(f[i].getName().matches(".*_1\\.fastq\\.gz") && !alFR1.contains(prefix)) {
+          alFR1.add(prefix);
+        } else if (f[i].getName().matches(".*_2\\.fastq\\.gz") && !alFR2.contains(prefix)) {
           alFR2.add(prefix);
         } else {
           validity = false;
