@@ -19,6 +19,7 @@ public class ReadPropertyUtil {
   
   /**
    * Opens the config.properties file and retrieves the URL of Guppy.
+   * @return the URL of Guppy.
    */
   public String getGuppyUrl() {
     String guppyUrl = "";
@@ -34,6 +35,7 @@ public class ReadPropertyUtil {
   
   /**
    * Opens the config.properties file and retrieves the URL of PBS template.
+   * @return the URL of PBS file.
    */
   public String getPbsUrl() {
     String pbsUrl = "";
@@ -49,16 +51,17 @@ public class ReadPropertyUtil {
   
   /**
    * Opens the config.properties file and retrieves the URL of root($HOME).
+   * @return the URL of root.
    */
   public String getRootUrl() {
-    String pbsUrl = "";
+    String userUrl = "";
     try (InputStream input = new FileInputStream("/opt/ontpipeline/config/config.properties")) {
       Properties prop = new Properties();
       prop.load(input);
-      pbsUrl = prop.getProperty("userUrl");
+      userUrl = prop.getProperty("userUrl");
     } catch (Exception e) {
       logger.error("Can not open config.properties file. " + e);
     }
-    return pbsUrl;
+    return userUrl;
   }
 }

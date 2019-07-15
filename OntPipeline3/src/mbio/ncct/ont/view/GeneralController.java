@@ -93,9 +93,9 @@ public class GeneralController {
   }
   
   /**
-   * Called when select Nanopore reads workspace button is clicked.
-   * Error check:
-   * 01. No FAST5 or FASTQ file is found in the directory.
+   * Called when select Nanopore reads workspace button is clicked.<br>
+   * Error check:<br>
+   * 01. No FAST5 or FASTQ file is found in the directory.<br>
    */
   @FXML
   private void handleSelectNanoporeWorkspace() {
@@ -112,16 +112,17 @@ public class GeneralController {
   }
   
   /**
-   * Called when select Illumina reads workspace button is clicked.
-   * If the check is pass and there is only one pair of Illumina reads, set the Prefix to this pair of Illumina reads.
-   * Error check:
-   * 01. The name structure is wrong.
+   * Called when select Illumina reads workspace button is clicked.<br>
+   * If the check is pass and there is only one pair of Illumina reads, set the Prefix to this pair of Illumina reads.<br>
+   * Error check:<br>
+   * 01. The name structure is wrong.<br>
    */
   @FXML
   private void handleSelectIlluminaWorkspace() {
     DirectoryChooser directoryChooser = new DirectoryChooser();
     File selectedDirectory = directoryChooser.showDialog(null);
     if (selectedDirectory != null) {
+      /*
       if (ckUtil.checkIlluminaReadsWithHq(selectedDirectory)) {
         tfIlluminaWorkspace.setText(selectedDirectory.toString()); 
         if (pUtil.getIlluminaReadsPrefix(selectedDirectory).size() == 1) {
@@ -136,6 +137,17 @@ public class GeneralController {
           tfPrefix.setText(pUtil.getIlluminaReadsPrefix(selectedDirectory).get(0));
         } else {
           tfPrefix.setText("");
+        }
+      } 
+      */
+      if ((boolean)ckUtil.checkIlluminaReads(selectedDirectory).get("validity")) {
+        tfIlluminaWorkspace.setText(selectedDirectory.toString()); 
+        if ((int)ckUtil.checkIlluminaReads(selectedDirectory).get("signal") == 2) {
+          pUtil.createAlertDialog(AlertType.INFORMATION, "", "Illumina reads will be trimmed.");
+          gm.setIfTrimIlluminaReads(true);
+        }
+        if (pUtil.getIlluminaReadsPrefix(selectedDirectory).size() == 1) {
+          tfPrefix.setText(pUtil.getIlluminaReadsPrefix(selectedDirectory).get(0));
         }
       } else {
         pUtil.createAlertDialog(AlertType.ERROR, "Wrong Illumina directory.", "This directory is not valid.");
@@ -158,9 +170,9 @@ public class GeneralController {
   }
   
   /**
-   * Reads the sample sheet.
-   * Error check:
-   * The name structure in the sample sheet is wrong.
+   * Reads the sample sheet.<br>
+   * Error check:<br>
+   * 01. The name structure in the sample sheet is wrong.<br>
    */
   @FXML
   private void handleReadSampleSheet() {

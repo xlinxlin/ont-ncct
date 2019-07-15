@@ -78,7 +78,7 @@ public class BashUtil {
   
   /**
    * Gets all the combinations of flowcell ID and kit number.<br>
-   * Return value Map<String, String>, key is FlowcellIdKitNumber, value is CFG file name. <br>
+   * Return a Map object, key is FlowcellIdKitNumber, value is CFG file name.<br>
    * Output example: {FLO-FLG001SQK-PSK004=dna_r9.4.1_450bps_hac, FLO-FLG001SQK-LWP001=dna_r9.4.1_450bps_hac, FLO-MIN106SQK-DCS109=dna_r9.4.1_450bps_hac, ...}
    * @return a map with all the combinations of flowcell ID and kit number.
    */

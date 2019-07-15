@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import org.apache.logging.log4j.LogManager;
@@ -179,34 +180,85 @@ public class CheckUtil {
   
   /**
    * Checks the Illumina reads directory.<br>
+   * Illumina reads name structure (trimming off) example:<br>
+   * ID40_HQ_1.fastq.gz ID40_HQ_2.fastq.gz<br>
+   * Illumina reads name structure (trimming on) example:<br>
+   * ID40_1.fastq.gz ID40_2.fastq.gz<br>
+   * @param illuminaDirectory the path to the Illumina reads directory.
+   * @return the HashMap with validity and signal(0=not valid data, 1=trimming off, 2=trimming on). 
+   */
+  public HashMap<String,Object> checkIlluminaReads(File illuminaDirectory) {
+    HashMap<String, Object> result = new HashMap<String, Object>();
+    result.put("validity", true);
+    result.put("signal", 0);
+    File[] f = illuminaDirectory.listFiles();
+    ArrayList<String> alFR1WithHQ = new ArrayList<String>();
+    ArrayList<String> alFR2WithHQ = new ArrayList<String>();
+    ArrayList<String> alFR1WithoutHQ = new ArrayList<String>();
+    ArrayList<String> alFR2WithoutHQ = new ArrayList<String>();
+    for (int i = 0; i < f.length; i++) {
+      if (f[i].isFile() && f[i].getName().contains("_")) {
+        String prefix = f[i].getName().substring(0, f[i].getName().indexOf("_"));
+        if(f[i].getName().matches(".*_HQ_1\\.fastq\\.gz") && !alFR1WithHQ.contains(prefix)) {
+          alFR1WithHQ.add(prefix);
+        } else if (f[i].getName().matches(".*_1\\.fastq\\.gz") && !alFR1WithoutHQ.contains(prefix)) {
+          alFR1WithoutHQ.add(prefix);
+        } else if (f[i].getName().matches(".*_HQ_2\\.fastq\\.gz") && !alFR2WithHQ.contains(prefix)) {
+          alFR2WithHQ.add(prefix);
+        } else if (f[i].getName().matches(".*_2\\.fastq\\.gz") && !alFR2WithoutHQ.contains(prefix)) {
+          alFR2WithoutHQ.add(prefix);
+        } else {
+          result.put("validity", false);
+          break;
+        }
+      }
+    }
+    if ((boolean)result.get("validity")) {
+      Boolean checkWithHQ = alFR1WithHQ.containsAll(alFR2WithHQ) && alFR2WithHQ.containsAll(alFR1WithHQ) && !alFR1WithHQ.isEmpty();
+      Boolean checkWithoutHQ = alFR1WithoutHQ.containsAll(alFR2WithoutHQ) && alFR2WithoutHQ.containsAll(alFR1WithoutHQ) && !alFR1WithoutHQ.isEmpty();
+      if (!checkWithHQ && !checkWithoutHQ) {
+        result.put("validity", false);
+      } else if (checkWithHQ) {
+        result.put("signal", 1);
+      } else {
+        result.put("signal", 2);
+      }
+    }
+    return result;
+  }
+  
+  /**
+   * Checks the Illumina reads directory.<br>
    * Illumina reads name structure (trimming free) example:<br>
    * ID40_HQ_1.fastq.gz ID40_HQ_2.fastq.gz
    * @param illuminaDirectory the path to the Illumina reads directory.
    * @return the Boolean value if the Illumina reads directory is valid. 
    */
+  /*
   public Boolean checkIlluminaReadsWithHq(File illuminaDirectory) {
     Boolean validity = true;
     File[] f = illuminaDirectory.listFiles();
-    ArrayList<String> alFR1 = new ArrayList<String>();
-    ArrayList<String> alFR2 = new ArrayList<String>();
+    ArrayList<String> alFR1WithHQ = new ArrayList<String>();
+    ArrayList<String> alFR2WithHQ = new ArrayList<String>();
     for (int i = 0; i < f.length; i++) {
       if (f[i].isFile() && f[i].getName().contains("_")) {
         String prefix = f[i].getName().substring(0, f[i].getName().indexOf("_"));
-        if(f[i].getName().matches(".*_HQ_1\\.fastq\\.gz") && !alFR1.contains(prefix)) {
-          alFR1.add(prefix);
-        } else if (f[i].getName().matches(".*_HQ_2\\.fastq\\.gz") && !alFR2.contains(prefix)) {
-          alFR2.add(prefix);
+        if(f[i].getName().matches(".*_HQ_1\\.fastq\\.gz") && !alFR1WithHQ.contains(prefix)) {
+          alFR1WithHQ.add(prefix);
+        } else if (f[i].getName().matches(".*_HQ_2\\.fastq\\.gz") && !alFR2WithHQ.contains(prefix)) {
+          alFR2WithHQ.add(prefix);
         } else {
           validity = false;
           break;
         }
       }
     }
-    if ( !alFR1.containsAll(alFR2) || !alFR2.containsAll(alFR1) || alFR1.isEmpty()) {
+    if ( !alFR1WithHQ.containsAll(alFR2WithHQ) || !alFR2WithHQ.containsAll(alFR1WithHQ) || alFR1WithHQ.isEmpty()) {
       validity = false;
     }
     return validity;
   }
+  */
   
   /**
    * Checks the Illumina reads directory.<br>
@@ -215,6 +267,7 @@ public class CheckUtil {
    * @param illuminaDirectory the path to the Illumina reads directory.
    * @return the Boolean value if the Illumina reads directory is valid. 
    */
+  /*
   public Boolean checkIlluminaReadsWithoutHq(File illuminaDirectory) {
     Boolean validity = true;
     File[] f = illuminaDirectory.listFiles();
@@ -238,6 +291,7 @@ public class CheckUtil {
     }
     return validity;
   }
+  */
   
   /**
    * Checks if the sample sheet has the correct content.<br>

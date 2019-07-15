@@ -24,7 +24,7 @@ if $IF_BASECALLING ; then
     /opt/ont-guppy-cpu_3.1.5/bin/guppy_basecaller -c $CFG_FILE -i $ONTWORKSPACE -s $OUTPUTPATH/Analysis_$currentDate/_Basecalled --num_callers $THREADS --cpu_threads_per_caller 1 -q 0 -r  | tee $OUTPUTPATH/Analysis_$currentDate/_Logs/guppy_basecaller.log
   else
     echo $(date) Run guppy_basecaller with high-accuracy mode.
-    /opt/ont-guppy-cpu_3.1.5/bin/guppy_basecaller --flowcell $FLOWCELL_ID --kit $KIT_NUMBER -i $ONTWORKSPACE -s $OUTPUTPATH/$OUTPUTPATH/Analysis_$currentDate/_Basecalled --num_callers $THREADS --cpu_threads_per_caller 1 -q 0 -r | tee $OUTPUTPATH/Analysis_$currentDate/guppy_basecaller.log
+    /opt/ont-guppy-cpu_3.1.5/bin/guppy_basecaller --flowcell $FLOWCELL_ID --kit $KIT_NUMBER -i $ONTWORKSPACE -s $OUTPUTPATH/Analysis_$currentDate/_Basecalled --num_callers $THREADS --cpu_threads_per_caller 1 -q 0 -r | tee $OUTPUTPATH/Analysis_$currentDate/guppy_basecaller.log
   fi
   echo $(date) Base calling ends.
 else

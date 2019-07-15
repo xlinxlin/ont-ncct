@@ -38,7 +38,7 @@ public class GeneralModel {
   private final StringProperty prefix = new SimpleStringProperty("");
   
   /** Initializes and sets if Illumina reads trimming necessary. */
-  private final BooleanProperty ifTrimIlluminaReads = new SimpleBooleanProperty(true);
+  private final BooleanProperty ifTrimIlluminaReads = new SimpleBooleanProperty(false);
   
   /**
    * Gets the ONT reads workspace.
@@ -170,7 +170,7 @@ public class GeneralModel {
   
   /**
    * Sets if Illumina reads will be trimmed.
-   * @param ifTrimIlluminaReas the Boolean value of if Illumina reads will be trimmed.
+   * @param ifTrimIlluminaReads the Boolean value of if Illumina reads will be trimmed.
    */
   public void setIfTrimIlluminaReads(Boolean ifTrimIlluminaReads) {
     this.ifTrimIlluminaReads.set(ifTrimIlluminaReads);
