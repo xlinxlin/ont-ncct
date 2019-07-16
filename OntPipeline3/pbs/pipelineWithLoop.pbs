@@ -174,7 +174,7 @@ for f in *.fastq ; do
       if $IF_TRIMILLUMINAREADS ; then
         echo $(date) [$pf] Trim Illumina reads starts.
         source /opt/anaconda3/bin/activate trimmomatic
-        trimmomatic PE -phred33 $ILLUMINAWORKSPACE/"$pf"_1.fastq.gz $ILLUMINAWORKSPACE/"$pf"_2.fastq.gz $ILLUMINAWORKSPACE/"$pf"_HQ_1.fastq.gz $ILLUMINAWORKSPACE/"$pf"_1_unpaired.fastq.gz "$pf"_HQ_2.fastq.gz $ILLUMINAWORKSPACE/"$pf"_2_unpaired.fastq.gz ILLUMINACLIP:NexteraPE-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 HEADCROP:8 MINLEN:40 | tee $OUTPUTPATH/Analysis_$currentDate/_Logs/"$pf"_Illumina_reads_trim.log
+        trimmomatic PE -threads $THREADS -phred33 -summary $OUTPUTPATH/Analysis_$currentDate/_Logs/"$pf"_trimmomatic_summary.log $ILLUMINAWORKSPACE/"$pf"_1.fastq.gz $ILLUMINAWORKSPACE/"$pf"_2.fastq.gz $ILLUMINAWORKSPACE/"$pf"_HQ_1.fastq.gz $ILLUMINAWORKSPACE/"$pf"_1_unpaired.fastq.gz $ILLUMINAWORKSPACE/"$pf"_HQ_2.fastq.gz $ILLUMINAWORKSPACE/"$pf"_2_unpaired.fastq.gz ILLUMINACLIP:NexteraPE-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 HEADCROP:8 MINLEN:40 
         conda deactivate
         echo $(date) [$pf] Trim Illumina reads ends.
       else
@@ -224,7 +224,7 @@ for f in *.fastq ; do
     if ! $IF_ASSEMBLY ; then
       echo $(date) [$pf] Trim Illumina reads starts.
       source /opt/anaconda3/bin/activate trimmomatic
-      trimmomatic PE -phred33 $ILLUMINAWORKSPACE/"$pf"_1.fastq.gz $ILLUMINAWORKSPACE/"$pf"_2.fastq.gz $ILLUMINAWORKSPACE/"$pf"_HQ_1.fastq.gz $ILLUMINAWORKSPACE/"$pf"_1_unpaired.fastq.gz "$pf"_HQ_2.fastq.gz $ILLUMINAWORKSPACE/"$pf"_2_unpaired.fastq.gz ILLUMINACLIP:NexteraPE-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 HEADCROP:8 MINLEN:40 | tee $OUTPUTPATH/Analysis_$currentDate/_Logs/"$pf"_Illumina_reads_trim.log
+      trimmomatic PE -threads $THREADS -phred33 -summary $OUTPUTPATH/Analysis_$currentDate/_Logs/"$pf"_trimmomatic_summary.log $ILLUMINAWORKSPACE/"$pf"_1.fastq.gz $ILLUMINAWORKSPACE/"$pf"_2.fastq.gz $ILLUMINAWORKSPACE/"$pf"_HQ_1.fastq.gz $ILLUMINAWORKSPACE/"$pf"_1_unpaired.fastq.gz $ILLUMINAWORKSPACE/"$pf"_HQ_2.fastq.gz $ILLUMINAWORKSPACE/"$pf"_2_unpaired.fastq.gz ILLUMINACLIP:NexteraPE-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 HEADCROP:8 MINLEN:40
       conda deactivate
       echo $(date) [$pf] Trim Illumina reads ends. 
     fi

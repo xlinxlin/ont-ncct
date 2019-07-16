@@ -23,7 +23,7 @@ public class BaseCallingModel {
   private final StringProperty kitNumber = new SimpleStringProperty("SQK-LSK109");
   
   /** Initializes and sets Guppy mode. */
-  private final StringProperty guppyMode = new SimpleStringProperty("high-accuracy");
+  private final StringProperty guppyMode = new SimpleStringProperty("fast");
   
   /** Initializes and sets nanopore device. */
   private final StringProperty device = new SimpleStringProperty("PromethION");

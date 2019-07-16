@@ -119,7 +119,7 @@ public class PipelineUtil {
     ArrayList<String> alPrefixs = new ArrayList<String>();
     File[] f = illuminaDirectory.listFiles();
     for (int i = 0; i < f.length; i++) {
-      if (f[i].isFile() && f[i].getName().matches(".*_HQ_1\\.fastq\\.gz")) {
+      if (f[i].isFile() && f[i].getName().matches(".*_HQ_1\\.fastq\\.gz") || f[i].isFile() && f[i].getName().matches(".*_1\\.fastq\\.gz")) {
         String prefix = f[i].getName().substring(0, f[i].getName().indexOf("_"));
         alPrefixs.add(prefix);
       }
