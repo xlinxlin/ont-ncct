@@ -46,6 +46,14 @@ public class AdvancedBasecallingController {
     alDevice.add("PromethION");
     ObservableList<String> olDevice = FXCollections.observableArrayList(alDevice);
     cbDevice.setItems(olDevice);
+    
+    cbGuppyMode.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> {
+      if(newValue.equals("fast")) {
+        cbDevice.setDisable(true);
+      } else {
+        cbDevice.setDisable(false);
+      }
+    });
   }
   
   /**
