@@ -69,6 +69,7 @@ public class FileUtil {
         .replaceAll("\\$ILLUMINAWORKSPACE", gm.getIlluminaReadsWorkspace())
         .replaceAll("\\$IF_TRIMILLUMINAREADS", gm.getIfTrimIlluminaReads().toString())
         .replaceAll("\\$OUTPUTPATH", gm.getOutputPath())
+        .replaceAll("\\$GUPPYURL", rpUtil.getGuppyUrl())
         .replaceAll("\\$IF_BASECALLING", bcm.getIfBasecalling().toString())
         .replaceAll("\\$FLOWCELL_ID", bcm.getFlowcellId())
         .replaceAll("\\$KIT_NUMBER", bcm.getKitNumber())

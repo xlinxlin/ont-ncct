@@ -100,6 +100,7 @@ public class GeneralController {
   @FXML
   private void handleSelectNanoporeWorkspace() {
     DirectoryChooser directoryChooser = new DirectoryChooser();
+    directoryChooser.setTitle("Select ONT reads directory.");
     File selectedDirectory = directoryChooser.showDialog(null);
     if (selectedDirectory != null) {
       if (ckUtil.checkDirectoryValidity(selectedDirectory,"fast5") || ckUtil.checkDirectoryValidity(selectedDirectory,"fastq")) {
@@ -120,6 +121,7 @@ public class GeneralController {
   @FXML
   private void handleSelectIlluminaWorkspace() {
     DirectoryChooser directoryChooser = new DirectoryChooser();
+    directoryChooser.setTitle("Select Illumina reads directory.");
     File selectedDirectory = directoryChooser.showDialog(null);
     if (selectedDirectory != null) {
       /*
@@ -163,6 +165,7 @@ public class GeneralController {
   @FXML
   private void handleSelectOutputDirectory() {
     DirectoryChooser directoryChooser = new DirectoryChooser();
+    directoryChooser.setTitle("Select outputpath directory.");
     File selectedDirectory = directoryChooser.showDialog(null);
     if (selectedDirectory != null) {
       tfOutputPath.setText(selectedDirectory.toString());
@@ -177,6 +180,7 @@ public class GeneralController {
   @FXML
   private void handleReadSampleSheet() {
     FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Select sample sheet.");
     fileChooser.getExtensionFilters().addAll(
         new ExtensionFilter("CSV/TSV Files", "*.csv", "*.CSV", "*.tsv", "*.TSV"));
     File sampleSheetFile = fileChooser.showOpenDialog(null);

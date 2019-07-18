@@ -21,10 +21,10 @@ if $IF_BASECALLING ; then
   mkdir $OUTPUTPATH/Analysis_$currentDate/_Basecalled
   if $IF_GUPPYFAST ; then
     echo $(date) Run guppy_basecaller with fast mode.
-    /opt/ont-guppy-cpu_3.1.5/bin/guppy_basecaller -c $CFG_FILE -i $ONTWORKSPACE -s $OUTPUTPATH/Analysis_$currentDate/_Basecalled --num_callers $THREADS --cpu_threads_per_caller 1 -q 0 -r  | tee $OUTPUTPATH/Analysis_$currentDate/_Logs/guppy_basecaller.log
+    $GUPPYURL/bin/guppy_basecaller -c $CFG_FILE -i $ONTWORKSPACE -s $OUTPUTPATH/Analysis_$currentDate/_Basecalled --num_callers $THREADS --cpu_threads_per_caller 1 -q 0 -r  | tee $OUTPUTPATH/Analysis_$currentDate/_Logs/guppy_basecaller.log
   else
     echo $(date) Run guppy_basecaller with high-accuracy mode.
-    /opt/ont-guppy-cpu_3.1.5/bin/guppy_basecaller --flowcell $FLOWCELL_ID --kit $KIT_NUMBER -i $ONTWORKSPACE -s $OUTPUTPATH/Analysis_$currentDate/_Basecalled --num_callers $THREADS --cpu_threads_per_caller 1 -q 0 -r | tee $OUTPUTPATH/Analysis_$currentDate/guppy_basecaller.log
+    $GUPPYURL/bin/guppy_basecaller --flowcell $FLOWCELL_ID --kit $KIT_NUMBER -i $ONTWORKSPACE -s $OUTPUTPATH/Analysis_$currentDate/_Basecalled --num_callers $THREADS --cpu_threads_per_caller 1 -q 0 -r | tee $OUTPUTPATH/Analysis_$currentDate/guppy_basecaller.log
   fi
   echo $(date) Base calling ends.
 else
@@ -36,18 +36,16 @@ if $IF_DEMULTIPLEXING ; then
   echo $(date) Demultiplexing starts.
   mkdir $OUTPUTPATH/Analysis_$currentDate/_Barcodes
   if $IF_BASECALLING ; then
-    #cd $OUTPUTPATH/Analysis_$currentDate/Basecalled
     in=$OUTPUTPATH/Analysis_$currentDate/_Basecalled
   else
-    #cd $ONTWORKSPACE
     in=$ONTWORKSPACE
   fi
   if [ ! -z "$BARCODEKIT" ] ; then
     echo $(date) Run guppy_barcoder with barcode kits "$BARCODEKIT".
-    /opt/ont-guppy-cpu_3.1.5/bin/guppy_barcoder -i $in -s $OUTPUTPATH/Analysis_$currentDate/_Barcodes -t $THREADS -q 0 -r --barcode_kit $BARCODEKIT --trim_barcodes | tee $OUTPUTPATH/Analysis_$currentDate/_Logs/guppy_barcoder.log
+    $GUPPYURL/bin/guppy_barcoder -i $in -s $OUTPUTPATH/Analysis_$currentDate/_Barcodes -t $THREADS -q 0 -r --barcode_kit $BARCODEKIT --trim_barcodes | tee $OUTPUTPATH/Analysis_$currentDate/_Logs/guppy_barcoder.log
   else 
     echo $(date) Run guppy_barcoder without barcode kits.
-    /opt/ont-guppy-cpu_3.1.5/bin/guppy_barcoder -i $in -s $OUTPUTPATH/Analysis_$currentDate/_Barcodes -t $THREADS -q 0 -r --trim_barcodes | tee $OUTPUTPATH/Analysis_$currentDate/_Logs/guppy_barcoder.log
+    $GUPPYURL/bin/guppy_barcoder -i $in -s $OUTPUTPATH/Analysis_$currentDate/_Barcodes -t $THREADS -q 0 -r --trim_barcodes | tee $OUTPUTPATH/Analysis_$currentDate/_Logs/guppy_barcoder.log
   fi
   echo $(date) Demultiplexing ends.
   #Map barcode to sample name
@@ -125,10 +123,8 @@ for f in *.fastq ; do
   #Reads filter
   if $IF_READSFILTER ; then
     if $IF_ADAPTERTRIMMING ; then
-      #cd $OUTPUTPATH/Analysis_$currentDate/AdapterTrimmedFiles
       in=$OUTPUTPATH/Analysis_$currentDate/_AdapterTrimmedFiles
     else
-      #cd $ONTWORKSPACE
       in=$ONTWORKSPACE
     fi
     echo $(date) [$pf] Reads filter starts.
@@ -138,7 +134,6 @@ for f in *.fastq ; do
     echo $(date) [$pf] Reads filter ends.
     conda deactivate
     echo $(date) [$pf] Read quality check after reads filter starts.
-    #cd $OUTPUTPATH/Analysis_$currentDate/FiltedFiles
     mkdir -p $OUTPUTPATH/Analysis_$currentDate/_StatFiles
     source /opt/anaconda3/bin/activate nanostat
     NanoStat --fastq $OUTPUTPATH/Analysis_$currentDate/_FiltedFiles/"$pf"_filted.fastq -t $THREADS | tee $OUTPUTPATH/Analysis_$currentDate/_StatFiles/"$pf"_filted_stat.txt
@@ -151,15 +146,12 @@ for f in *.fastq ; do
   #Assembly
   if $IF_ASSEMBLY ; then
     if $IF_READSFILTER ; then
-      #cd $OUTPUTPATH/Analysis_$currentDate/FiltedFiles
       in=$OUTPUTPATH/Analysis_$currentDate/_FiltedFiles
     else
-      #cd $ONTWORKSPACE
       in=$ONTWORKSPACE
     fi 
     echo $(date) [$pf] Assembly starts.
     mkdir -p ~/tmp_assembly_$currentDate/"$pf"_Assembly
-    #cp "$pf"_filted.fastq ~/tmp_assembly_$currentDate/"$pf".fastq
     cp $in/"$pf"*.fastq ~/tmp_assembly_$currentDate/"$pf".fastq
     source /opt/anaconda3/bin/activate unicycler
     if [ "$METHOD" == "Long-read-only assembly" ]; then
@@ -169,7 +161,6 @@ for f in *.fastq ; do
       else 
         unicycler -l ~/tmp_assembly_$currentDate/"$pf".fastq -o ~/tmp_assembly_$currentDate/"$pf"_Assembly -t $THREADS --mode $MODE | tee $OUTPUTPATH/Analysis_$currentDate/_Logs/"$pf"_assembly.log
       fi
-      #cp -r ~/tmp_assembly_$currentDate/"$pf"_Assembly $OUTPUTPATH/Analysis_$currentDate/Assembly
     else
       if $IF_TRIMILLUMINAREADS ; then
         echo $(date) [$pf] Trim Illumina reads starts.
@@ -188,7 +179,6 @@ for f in *.fastq ; do
       else
         unicycler -1 ~/tmp_assembly_$currentDate/"$pf"_HQ_1.fastq.gz -2 ~/tmp_assembly_$currentDate/"$pf"_HQ_2.fastq.gz -l ~/tmp_assembly_$currentDate/"$pf".fastq -o ~/tmp_assembly_$currentDate/"$pf"_Assembly -t $THREADS --mode $MODE | tee $OUTPUTPATH/Analysis_$currentDate/_Logs/"$pf"_assembly.log
       fi
-      #cp -r ~/tmp_assembly_$currentDate/"$pf"_Assembly $OUTPUTPATH/Analysis_$currentDate
     fi
     conda deactivate
     cp -r ~/tmp_assembly_$currentDate/"$pf"_Assembly $OUTPUTPATH/Analysis_$currentDate
@@ -200,26 +190,19 @@ for f in *.fastq ; do
   
   #Polishing
   if $IF_POLISHING; then
-    echo $(date) [$pf] Polishing starts. Polishing $PTIMES times.
+    echo $(date) [$pf] Polishing starts. Polishing $PTIMES \times.
     mkdir -p $OUTPUTPATH/Analysis_$currentDate/"$pf"_Polishing
     if $IF_ASSEMBLY ; then
       cp $OUTPUTPATH/Analysis_$currentDate/"$pf"_Assembly/assembly.fasta $OUTPUTPATH/Analysis_$currentDate/"$pf"_Polishing/assembly_1.fasta
-      #cd $OUTPUTPATH/Analysis_$currentDate/"$pf"_Polishing
-      #in=$OUTPUTPATH/Analysis_$currentDate/"$pf"_Polishing
     elif $IF_READSFILTER ; then
-      #cd $OUTPUTPATH/Analysis_$currentDate/FiltedFiles
-      #in=$OUTPUTPATH/Analysis_$currentDate/FiltedFiles
       echo $(date) [$pf] Merge and convert FASTQ files to one FASTA file.
       source /opt/anaconda3/bin/activate seqtk
       seqtk seq -a $OUTPUTPATH/Analysis_$currentDate/_FiltedFiles/"$pf"*.fastq > $OUTPUTPATH/Analysis_$currentDate/"$pf"_Polishing/assembly_1.fasta
       conda deactivate
     else
-      #cd $ONTWORKSPACE
-      #in=$ONTWORKSPACE
       echo $(date) [$pf] Merge FASTA files to one FASTA file.
       cat $ONTWORKSPACE/*.fasta > $OUTPUTPATH/Analysis_$currentDate/"$pf"_Polishing/assembly_1.fasta
     fi
-    #cd $OUTPUTPATH/Analysis_$currentDate/"$pf"_Polishing
 
     if ! $IF_ASSEMBLY ; then
       echo $(date) [$pf] Trim Illumina reads starts.
