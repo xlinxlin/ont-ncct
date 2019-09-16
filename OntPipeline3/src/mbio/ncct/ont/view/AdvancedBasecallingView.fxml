@@ -22,8 +22,12 @@
          <children>
             <Label layoutY="5.0" text="Mode" />
             <ChoiceBox fx:id="cbGuppyMode" layoutX="43.0" prefWidth="150.0" value="high-accuracy" />
-            <Label layoutX="223.0" layoutY="5.0" text="Device" />
-            <ChoiceBox fx:id="cbDevice" layoutX="274.0" prefWidth="150.0" value="PromethION" />
+            <Group fx:id="gpDevice" layoutX="223.0">
+               <children>
+                  <Label layoutY="5.0" text="Device" />
+                  <ChoiceBox fx:id="cbDevice" layoutX="51.0" prefWidth="150.0" value="PromethION" />
+               </children>
+            </Group>
          </children>
       </Group>
       <Label layoutX="34.0" layoutY="21.0" text="Guppy_basecaller Settings" AnchorPane.leftAnchor="30.0" />

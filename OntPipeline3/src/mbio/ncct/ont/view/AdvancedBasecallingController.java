@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
 
@@ -30,6 +31,10 @@ public class AdvancedBasecallingController {
   /** Signal for if OK is clicked. */
   public int isOK = 0;
   
+  /** Initializes device group.  */
+  @FXML
+  private Group gpDevice;
+  
   /**
    * Initializes the controller of advanced base calling settings.
    */
@@ -48,10 +53,12 @@ public class AdvancedBasecallingController {
     cbDevice.setItems(olDevice);
     
     cbGuppyMode.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> {
-      if(newValue.equals("fast")) {
-        cbDevice.setDisable(true);
+      if(newValue.equals("fast")) {  //"fast" mode doesn't care about device. 
+        //cbDevice.setDisable(true);
+        gpDevice.setDisable(true);
       } else {
-        cbDevice.setDisable(false);
+        //cbDevice.setDisable(false);
+        gpDevice.setDisable(false);
       }
     });
   }
