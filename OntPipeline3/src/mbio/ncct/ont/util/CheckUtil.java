@@ -125,7 +125,7 @@ public class CheckUtil {
    * @return true if device with the correct flowcell ID when guppy_basecaller fast mode is used.
    */
   public Boolean checkDeviceWithCorrectFlowcellInFasfMode(BaseCallingModel bcm) {
-    return bcm.getIfGuppyFast() ? 
+    return !bcm.getIfGuppyFast() ? 
         (bcm.getDevice().equals("PromethION") ? 
             (bcm.getFlowcellId().startsWith("FLO-PRO") ? true: false) : (bcm.getFlowcellId().startsWith("FLO-MIN") ? true: false)) : true;
   }
