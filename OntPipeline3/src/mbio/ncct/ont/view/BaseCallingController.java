@@ -111,6 +111,7 @@ public class BaseCallingController {
     cbKitNumber.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> {
       bcm.setKitNumber(newValue);
     });
+    
   }
   
   /**

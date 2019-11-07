@@ -3,17 +3,23 @@ package mbio.ncct.ont.view;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import mbio.ncct.ont.MainApp;
 import mbio.ncct.ont.model.PolishingModel;
+import mbio.ncct.ont.util.BashUtil;
+import mbio.ncct.ont.util.PipelineUtil;
 
 /**
  * This is the controller for polishing setting view.
@@ -25,6 +31,12 @@ public class PolishingController {
   
   /** Initializes log4j2. */
   private static Logger logger = LogManager.getLogger(PolishingController.class);
+  
+  /** Initializes a BashUtil object. */
+  private BashUtil bUtil = new BashUtil();
+  
+  /** Initializes a PipelineUtil object.  */
+  private PipelineUtil pUtil = new PipelineUtil();;
   
   /** Initializes polishing group.  */
   @FXML
@@ -39,6 +51,10 @@ public class PolishingController {
 
   /** Window mainApp.  */
   private Window mainApp;
+  
+  /** The choice box for Medaka models. */
+  @FXML
+  public ChoiceBox<String> cbMedakaModel;
   
   /**
    * Initializes the controller of polishing setting view.
@@ -56,6 +72,15 @@ public class PolishingController {
         pm.setIfPolishing(false);
       }
     });
+    
+    ObservableList<String> olMedakaModels = FXCollections.observableArrayList(bUtil.getMedakaModels());
+    cbMedakaModel.setItems(olMedakaModels);
+    if(olMedakaModels.contains("r941_min_high")) {
+      cbMedakaModel.getSelectionModel().select("r941_min_high");
+    } else {
+      cbMedakaModel.getSelectionModel().selectFirst();
+      pm.setMedakaModel(cbMedakaModel.getSelectionModel().getSelectedItem());
+    }
   }
   
   /**
@@ -94,5 +119,18 @@ public class PolishingController {
     } catch (Exception e) {
       logger.error("Can not load advanced polishing view. " + e);
     }
+  }
+  
+  /**
+   * Shows the hint of Assembly Mode setting.
+   */
+  @FXML
+  private void showMedakaModelHint() {
+    pUtil.createAlertDialog(AlertType.INFORMATION, "Medaka model", "This option is only for Nanopore reads only polishing method"
+        + " (without Illumina reads).\n\n"
+        + "min: abbreviation for MinION.\n"
+        + "prom: abbreviation for PromethION.\n"
+        + "fast: if you basecalled the data with Guppy fast mode.\n"
+        + "high: if you basecalled the data with Guppy high-accuracy mode.");
   }
 }

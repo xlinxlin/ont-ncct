@@ -92,6 +92,7 @@ public class FileUtil {
         .replaceAll("\\$IF_BUSCO", pm.getIfBusco().toString())
         .replaceAll("\\$LINEAGE", pm.getBuscoData())
         .replaceAll("\\$PTIMES", pm.getPtimes())
+        .replaceAll("\\$MEDAKA_MODEL", pm.getMedakaModel())
         .replaceAll("\\$IF_GUPPYFAST", bcm.getIfGuppyFast().toString())
         .replaceAll("\\$CFG_FILE", bcm.getGuppyCfgFile());
    try {
@@ -173,6 +174,11 @@ public class FileUtil {
       }
       if (pm.getIfPolishing()) {
         writer.append("\n====Polishing Settings====\n");
+        if (gm.getIlluminaReadsWorkspace().isEmpty()) {
+          writer.append("Polishing Tool: Medaka (Medaka model: + " + pm.getMedakaModel() + ")\n" );
+        } else {
+          writer.append("Polishing Tool: Pilon with the given Illumina reads.\n" );
+        }
         writer.append("Polishing times: " + pm.getPtimes() + " \n");
         writer.append("BUSCO: " + pm.getIfBusco() + " \n");
         if (pm.getIfBusco()) {

@@ -3,6 +3,7 @@ package mbio.ncct.ont.util;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.logging.log4j.LogManager;
@@ -182,5 +183,29 @@ public class BashUtil {
     } catch (Exception e) {
       logger.error("Can not open terminal to show log. " + e);
     }
+  }
+  
+  public ArrayList<String> getMedakaModels(){
+    String s = null;
+    ArrayList<String> arMedakaModels = new ArrayList<String>();
+    Process p = null;
+    try {
+      p = Runtime.getRuntime().exec(new String[] { "bash", "-c", "source ~/anaconda3/bin/activate medaka;medaka tools list\\_models | head -n 1;conda deactivate" });
+    } catch (Exception e) {
+      logger.error("Can not get barcode kits. " + e);
+    }
+    BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+    //BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+    try {
+      while ((s = stdInput.readLine()) != null ) {
+        if (s.isEmpty() == false) {
+          s = s.substring(11);
+          arMedakaModels.addAll(Arrays.asList(s.split(", ")));
+        }        
+      }
+    } catch (Exception e) {
+      logger.error("Can not read barcode kits. " + e);
+    }
+    return arMedakaModels;
   }
 }

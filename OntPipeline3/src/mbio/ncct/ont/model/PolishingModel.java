@@ -25,6 +25,9 @@ public class PolishingModel {
   /** Initializes and sets the database of BUSCO. */
   private final StringProperty buscoDatabase = new SimpleStringProperty("bacteria");
   
+  /** Initializes and sets the model of Medaka. */
+  private final StringProperty medakaModel = new SimpleStringProperty("r941_min_high");
+  
   /**
    * Gets the polishing times.
    * @return the String of polishing times.
@@ -87,5 +90,21 @@ public class PolishingModel {
    */
   public Boolean getIfBusco() {
     return ifBusco.get();
+  }
+  
+  /**
+   * Gets the model of Medaka.
+   * @return the String of the Medaka model.
+   */
+  public String getMedakaModel() {
+    return medakaModel.get();
+  }
+  
+  /**
+   * Sets the Medaka model.
+   * @param medakaModel the String of Medaka model.
+   */
+  public void setMedakaModel(String medakaModel) {
+    this.medakaModel.set(medakaModel);
   }
 }

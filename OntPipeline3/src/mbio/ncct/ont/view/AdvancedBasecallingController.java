@@ -52,6 +52,7 @@ public class AdvancedBasecallingController {
     ObservableList<String> olDevice = FXCollections.observableArrayList(alDevice);
     cbDevice.setItems(olDevice);
     
+    /*
     cbGuppyMode.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> {
       if(newValue.equals("fast")) {  //"fast" mode doesn't care about device. 
         //cbDevice.setDisable(true);
@@ -61,6 +62,7 @@ public class AdvancedBasecallingController {
         gpDevice.setDisable(false);
       }
     });
+    */
   }
   
   /**
